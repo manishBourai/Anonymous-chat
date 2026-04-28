@@ -1,0 +1,223 @@
+.app-shell {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 24px;
+  padding: 32px;
+  min-height: 100svh;
+  box-sizing: border-box;
+}
+
+.hero-panel,
+.chat-panel {
+  border: 1px solid rgba(24, 27, 36, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 50px rgba(41, 52, 77, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.hero-panel {
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background:
+    radial-gradient(circle at top left, rgba(244, 123, 77, 0.24), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(54, 165, 142, 0.2), transparent 32%),
+    rgba(255, 250, 244, 0.86);
+}
+
+.eyebrow,
+.chat-label,
+.status-title {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--muted-strong);
+  margin: 0 0 12px;
+}
+
+.hero-copy,
+.status-copy,
+.error-copy {
+  max-width: 58ch;
+}
+
+.meta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 28px 0;
+}
+
+.session-pill,
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(24, 27, 36, 0.08);
+}
+
+.status-badge[data-status='connected'] {
+  color: #0d6c59;
+}
+
+.status-badge[data-status='searching'] {
+  color: #8e5a12;
+}
+
+.status-badge[data-status='connecting'],
+.status-badge[data-status='disconnected'] {
+  color: #5f677a;
+}
+
+.status-card {
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(24, 27, 36, 0.08);
+}
+
+.error-copy {
+  color: #a53f2b;
+  margin-top: 10px;
+}
+
+.chat-panel {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 24px 24px 18px;
+  border-bottom: 1px solid rgba(24, 27, 36, 0.08);
+}
+
+.chat-header h2 {
+  margin: 0;
+}
+
+.ghost-button {
+  border: 1px solid rgba(24, 27, 36, 0.14);
+  background: transparent;
+  color: var(--text-strong);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ghost-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.message-list {
+  padding: 22px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(244, 247, 252, 0.92)),
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 28px,
+      rgba(37, 50, 74, 0.03) 28px,
+      rgba(37, 50, 74, 0.03) 29px
+    );
+}
+
+.message-empty {
+  margin: auto 0;
+  text-align: center;
+  color: var(--muted-strong);
+}
+
+.message-row {
+  display: flex;
+}
+
+.message-row.self {
+  justify-content: flex-end;
+}
+
+.message-bubble {
+  max-width: min(78%, 32rem);
+  padding: 12px 14px;
+  border-radius: 18px;
+  line-height: 1.4;
+  box-shadow: 0 10px 20px rgba(39, 49, 76, 0.08);
+}
+
+.message-row.self .message-bubble {
+  background: linear-gradient(135deg, #123b58, #275f78);
+  color: white;
+  border-bottom-right-radius: 6px;
+}
+
+.message-row.partner .message-bubble {
+  background: white;
+  color: var(--text-strong);
+  border: 1px solid rgba(24, 27, 36, 0.08);
+  border-bottom-left-radius: 6px;
+}
+
+.composer {
+  padding: 18px 20px 20px;
+  border-top: 1px solid rgba(24, 27, 36, 0.08);
+  display: flex;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.composer textarea {
+  flex: 1;
+  min-height: 56px;
+  max-height: 160px;
+  resize: vertical;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(24, 27, 36, 0.12);
+  font: inherit;
+  color: var(--text-strong);
+  background: rgba(249, 250, 252, 0.95);
+}
+
+.composer button {
+  align-self: flex-end;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #d0562a, #ea8f4d);
+  color: white;
+  font: inherit;
+  padding: 14px 18px;
+  cursor: pointer;
+}
+
+.composer textarea:disabled,
+.composer button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 980px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .hero-panel {
+    padding: 24px;
+  }
+}

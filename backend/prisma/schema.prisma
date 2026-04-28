@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ChatSession {
+  id            String        @id @default(cuid())
+  chatId        String        @unique
+  userOneId     String
+  userTwoId     String
+  startedAt     DateTime      @default(now())
+  endedAt       DateTime?
+  closedReason  String?
+  messageCount  Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  messages      ChatMessage[]
+
+  @@index([userOneId])
+  @@index([userTwoId])
+  @@index([startedAt])
+}
+
+model ChatMessage {
+  id           String      @id
+  chatId       String
+  senderId     String
+  recipientId  String
+  body         String
+  createdAt    DateTime
+  persistedAt  DateTime    @default(now())
+  session      ChatSession @relation(fields: [chatId], references: [chatId], onDelete: Cascade)
+
+  @@index([chatId, createdAt])
+  @@index([senderId, createdAt])
+}
