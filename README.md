@@ -9,6 +9,10 @@ Tech stack:
 - Cache / shared state: Redis
 - Messaging / event stream: Kafka
 
+Live URLs:
+- Frontend: `http://anonymous-chat.bourai.online`
+- Backend: `http://anonymous-chat-backend.bourai.online`
+
 ## Architecture Overview
 
 The system is split into a React frontend and a real-time backend.
@@ -87,34 +91,38 @@ Current backend shape:
 
 ## Deployment Approach
 
-For an assignment or demo deployment, use separate services for:
-- frontend app
-- backend app
-- PostgreSQL
-- Redis
-- Kafka
+This project is deployed on AWS ECS.
 
-Recommended deployment pattern:
-- Deploy the React frontend as static assets on Vercel, Netlify, or Nginx
-- Deploy the backend as a Node.js service on Render, Railway, Fly.io, EC2, or Docker
-- Use managed PostgreSQL
-- Use managed Redis
-- Use managed Kafka or Redpanda-compatible infrastructure
+Deployed endpoints:
+- Frontend: `http://anonymous-chat.bourai.online`
+- Backend: `http://anonymous-chat-backend.bourai.online`
 
-Environment variables required by the backend are documented in:
-- [backend/.env.example](/abs/c:/Users/mukul/Desktop/Anonymous-chate/backend/.env.example)
+Deployment layout:
+- The frontend is built as static assets and served behind Nginx.
+- The backend runs as a Node.js service on ECS.
+- PostgreSQL stores persistent chat data.
+- Redis stores matchmaking state, short-lived sessions, and rate-limit counters.
+- Kafka carries chat lifecycle events across the backend.
 
-Basic deployment steps:
+Typical ECS deployment flow:
 
-1. Provision PostgreSQL, Redis, and Kafka.
-2. Set backend environment variables for DB, Redis, Kafka brokers, port, and CORS origin.
-3. Run Prisma generate and migrations during backend deployment.
-4. Build and deploy the backend.
-5. Set `VITE_SOCKET_URL` for the frontend to point to the backend WebSocket origin.
-6. Build and deploy the frontend.
+1. Build the frontend and backend artifacts.
+2. Package the backend into a Docker image and push it to a container registry.
+3. Deploy the backend container to an ECS service.
+4. Serve the frontend build through Nginx.
+5. Route traffic using domain-based reverse proxy rules:
+   - `anonymous-chat.bourai.online` -> frontend
+   - `anonymous-chat-backend.bourai.online` -> backend
+6. Configure backend environment variables for PostgreSQL, Redis, Kafka, port, and CORS.
+7. Set the frontend `VITE_SOCKET_URL` to the backend public URL.
+
+Environment variable references:
+- Backend example: [backend/.env.example](/abs/c:/Users/mukul/Desktop/Anonymous-chate/backend/.env.example)
+- Frontend example: [frontend/.env.example](/abs/c:/Users/mukul/Desktop/Anonymous-chate/frontend/.env.example)
 
 Operational notes:
-- WebSocket sticky sessions are not required for the current simplified version if reconnect creates or restores the session correctly.
+- The backend should allow `CORS_ORIGIN=http://anonymous-chat.bourai.online`.
+- The frontend should use `VITE_SOCKET_URL=http://anonymous-chat-backend.bourai.online`.
 - Redis remains the shared source of truth for matchmaking state.
 - Kafka currently matters most for chat lifecycle events rather than message fanout.
 
