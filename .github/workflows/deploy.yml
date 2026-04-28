@@ -36,11 +36,11 @@ jobs:
             echo "Backend setup..."
             cd backend
             pnpm install --frozen-lockfile
-            npx tsc -b
+            pnpm build
 
             pm2 describe server > /dev/null \
               && pm2 restart server \
-              || pm2 start ./dist/index.js --name server
+              || pm2 start pnpm --name server -- start
 
             # ---------------- FRONTEND ----------------
             echo "Frontend build..."
